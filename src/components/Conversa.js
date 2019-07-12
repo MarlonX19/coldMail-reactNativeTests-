@@ -20,11 +20,20 @@ class Conversa extends Component {
     }
 
      _enviaMensagem(){
+                 //var that = this;
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+        const moment = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec;
+
         const mensagem = this.props.mensagem;
         const contatoNome = this.props.contatoNome;
         const contatoEmail = this.props.contatoEmail;
 
-        this.props.enviaMensagem(mensagem, contatoNome, contatoEmail)
+        this.props.enviaMensagem(mensagem, contatoNome, contatoEmail, moment)
     } 
 
     criaFonteDeDados( conversa ){
@@ -38,6 +47,7 @@ class Conversa extends Component {
             return (
                 <View style={{alignItems: 'flex-end', marginTop: 5, marginBottom: 5, marginLeft: 40}}>
                     <Text style={{fontSize: 18, padding: 10, color: '#000', backgroundColor: '#f7f7f7', elevation: 1 }}>{texto.mensagem}</Text>
+                    <Text style={{ fontSize: 11, paddingLeft: 10, paddingRight: 10, paddingBottom: 2, color: 'lightgrey', fontWeight: '800', backgroundColor: '#f7f7f7', elevation: 1, alignSelf: 'flex-end' }}>{texto.moment}</Text>
                 </View>
             )
         }
@@ -45,6 +55,7 @@ class Conversa extends Component {
         return (
             <View style={{alignItems: 'flex-start', marginTop: 5, marginBottom: 5, marginRight: 40}}>
                 <Text style={{fontSize: 18, padding: 10, color: '#000', backgroundColor: '#dbf5b4', elevation: 1 }}>{texto.mensagem}</Text>
+                <Text style={{ fontSize: 11, paddingLeft: 10, paddingRight: 10, paddingBottom: 2, color: 'lightgrey', fontWeight: '800', backgroundColor: '#dbf5b4', elevation: 1, alignSelf: 'flex-start' }}>{texto.moment}</Text>
             </View>
         )
     }

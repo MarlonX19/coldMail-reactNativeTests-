@@ -93,7 +93,7 @@ export const modificaMensagem = (texto) => {
     })
 }
 
-export const enviaMensagem = (mensagem, contatoNome, contatoEmail) => {
+export const enviaMensagem = (mensagem, contatoNome, contatoEmail, moment) => {
 
         // Dados dousuario logado
         const { currentUser } = firebase.auth();
@@ -109,10 +109,10 @@ export const enviaMensagem = (mensagem, contatoNome, contatoEmail) => {
         const contatoEmailB64 = b64.encode(contatoEmail);
 
         firebase.database().ref(`/mensagens/${usuarioEmailB64}/${contatoEmailB64}`)
-            .push({ mensagem: mensagem, tipo: 'e' })
+            .push({ mensagem: mensagem, tipo: 'e', moment: moment })
             .then(() => {
                 firebase.database().ref(`/mensagens/${contatoEmailB64}/${usuarioEmailB64}`)
-                    .push({ mensagem: mensagem, tipo: 'r' })
+                    .push({ mensagem: mensagem, tipo: 'r', moment: moment })
                     .then(() => dispatch ({ type: ENVIA_MENSAGEM_SUCESSO }) )
             })
             .then(() => { //Armazena cabecalho de conversas do usuario logado
