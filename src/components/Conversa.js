@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, Image, TextInput, ListView, Text } from 'react-native';
+import { View, TouchableHighlight, Image, TextInput, ListView, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { modificaMensagem, enviaMensagem, conversaUsuarioFetch } from '../actions/AppActions';
@@ -81,12 +81,11 @@ class Conversa extends Component {
                     />
 
                 
-                    <TouchableHighlight
+                    <TouchableOpacity
                         onPress={ () => this._enviaMensagem()  }
-                        underlayColor= "white"
                     >
                         <Image style={{height: 60, width: 65}} source={require('../imgs/envia.png')} />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
                
             </View>

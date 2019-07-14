@@ -5,12 +5,15 @@ import { MODIFICA_ADICIONA_CONTATO_EMAIL,
        MODIFICA_MENSAGEM,
        LISTA_CONVERSA_USUARIO,
        ENVIA_MENSAGEM_SUCESSO,
-       LISTA_CONVERSAS_USUARIO
+       LISTA_CONVERSAS_USUARIO,
+       LOGIN_USUARIO_SUCESSO
      } from './types';
 
 import b64 from 'base-64';
 import firebase from 'firebase';
 import _ from 'lodash';
+import  { AsyncStorage } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 export const modificaAdicionarContatoEmail = (texto) => {
     return {
@@ -71,12 +74,32 @@ export const habilitaInclusaoContato = () => (
     }
 )
 
+export const sairApp = () => {
+    try {
+        AsyncStorage.setItem('usermail', '');
+      } catch (error) {
+        // Error saving data
+        console.log(error)
+      }
 
-export const contatosUsuarioFetch = () => {
-    const { currentUser } = firebase.auth();
+      return dispatch => {
+          dispatch({ type: LOGIN_USUARIO_SUCESSO, payload: '' })
+
+       firebase.auth().signOut()
+       .then(() => Actions.formLogin())
+      }
+   
+}
+
+
+
+export const contatosUsuarioFetch = (usermail) => {
+ //const { currentUser } = firebase.auth();
+ console.log(usermail)
 
     return (dispatch) => {
-        let emailUsuarioB64 = b64.encode(currentUser.email);
+
+        let emailUsuarioB64 = b64.encode(usermail);
 
         firebase.database().ref(`/usuario_contatos/${emailUsuarioB64}`)
             .on("value", snapshot => {
@@ -153,11 +176,11 @@ export const conversaUsuarioFetch = (contatoEmail) => {
 
 }
 
-export const conversasUsuarioFetch = () => {
-    const { currentUser } = firebase.auth();
+export const conversasUsuarioFetch = (usermail) => {
+    //const { currentUser } = firebase.auth();
 
     return dispatch => {
-        let usuarioEmailB64 = b64.encode(currentUser.email);
+        let usuarioEmailB64 = b64.encode(usermail);
 
         firebase.database().ref(`/usuario_conversas/${usuarioEmailB64}`)
             .on("value", snapshot => {

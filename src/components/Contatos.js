@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, TouchableHighlight, Image } from 'react-native';
+import { View, Text, ListView, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
@@ -10,7 +10,7 @@ import { contatosUsuarioFetch } from '../actions/AppActions';
 class Contatos extends Component {
 
     componentWillMount(){
-        this.props.contatosUsuarioFetch();
+        this.props.contatosUsuarioFetch(this.props.usermail);
         this.criaFonteDeDados(this.props.contatos)
     }
 
@@ -26,7 +26,7 @@ class Contatos extends Component {
 
     renderRow(contato){
         return (
-            <TouchableHighlight
+            <TouchableOpacity
                 onPress={ () => Actions.conversa({ title: contato.nome, contatoNome: contato.nome, contatoEmail: contato.email }) }
             >
             
@@ -37,7 +37,7 @@ class Contatos extends Component {
                 </View>
                 <Image style={{height: 50, width: 50}} source={require('../imgs/contact.png')} />
              </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 
@@ -58,7 +58,8 @@ mapStateToProps = state => {
     const contatos = _.map(state.ListaContatosReducer, (val, uid) => {
         return { ...val, uid }
     })
-    return { contatos: contatos}
+    return { contatos: contatos, usermail: state.AutenticacaoReducer.usermail }
+
 }
 
 export default connect(mapStateToProps, { contatosUsuarioFetch })(Contatos);

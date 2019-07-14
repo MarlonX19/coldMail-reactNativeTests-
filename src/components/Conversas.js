@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView,TouchableHighlight, Image } from 'react-native';
+import { View, Text, ListView,TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
@@ -8,7 +8,7 @@ import { conversasUsuarioFetch } from '../actions/AppActions';
 class Conversas extends Component {
 
     componentWillMount() {
-        this.props.conversasUsuarioFetch();
+        this.props.conversasUsuarioFetch(this.props.usermail);
         this.criaFonteDeDados(this.props.conversas);
     }
 
@@ -24,7 +24,7 @@ class Conversas extends Component {
 
     renderRow( conversa ) {
         return (
-            <TouchableHighlight
+            <TouchableOpacity
                 onPress={() => Actions.conversa({ title: conversa.nome, contatoNome: conversa.nome, contatoEmail: conversa.email }) }
             >
 
@@ -34,7 +34,7 @@ class Conversas extends Component {
                 </View>
                 <Image style={{height: 70, width: 70}} source={require('../imgs/chat.png')} />
             </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 
@@ -56,7 +56,8 @@ mapStateToProps = state => {
     });
 
     return {
-        conversas: conversas
+        conversas: conversas,
+        usermail: state.AutenticacaoReducer.usermail
     }
 }
 

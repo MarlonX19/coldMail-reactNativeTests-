@@ -10,6 +10,7 @@ import { MODIFICA_NOME,
     } from '../actions/types';
 
 const INITIAL_STATE = {
+    usermail: '',
     nome: '',
     email: '',
     senha: '',
@@ -47,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
             return{ ...state, loading_cadastro: true }
 
         case LOGIN_USUARIO_SUCESSO:
-            return{ ...state, ...INITIAL_STATE }
+            return{ ...state, nome: '', email: '', senha: '', loading_login: false, usermail: action.payload }
         
             
         default:
